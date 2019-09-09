@@ -1,4 +1,4 @@
-import { LIST_TOPPINGS } from "../actions/toppings";
+import { SET_TOPPINGS } from "../actions/toppings";
 // import {helperFunction} from '../helpers'
 
 const initialState = {
@@ -9,6 +9,6 @@ export default function toppingsReducer(
   toppingsState = initialState,
   { type, payload }
 ) {
-  if (type === LIST_TOPPINGS) return toppingsState;
+  if (type === SET_TOPPINGS) return toppingsState;
   return toppingsState;
 }

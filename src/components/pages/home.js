@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-export default function home() {
-  return <div>Home</div>;
+export default function Home(props) {
+  return (
+    <>
+      <div>Home</div>
+    </>
+  );
 }

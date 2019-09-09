@@ -3,7 +3,7 @@ import { toggleLoader } from "../actions/ui";
 
 const API_URL = "https://jsonplaceholder.typicode.com";
 
-export const api = ({ dispatch }) => next => action => {
+export const apiMiddleware = ({ dispatch }) => next => action => {
   next(action);
 
   if (action.type === API_REQUEST) {
