@@ -3,6 +3,7 @@ import { useMachine } from "@xstate/react";
 import { Machine } from "xstate";
 import styled from "styled-components";
 import Form from "../shared/form";
+import { useAuthActions } from "../../hooks/commands/useAuthActions";
 
 const PIZZA_CHEF = "PIZZA_CHEF";
 const OPS_MANAGER = "OPS_MANAGER";
@@ -27,6 +28,7 @@ const toggleMachine = Machine({
 });
 
 export default function Signup() {
+  const { signupPizzaChef, signupOpsManager } = useAuthActions();
   const [formValues, setFormValues] = useState({ username: "", password: "" });
   const [current, send] = useMachine(toggleMachine);
   const toggle = type => () => {
@@ -50,15 +52,13 @@ export default function Signup() {
   };
 
   const handleSubmit = currentValue => formValues => {
-    console.log("the currentValue: ", currentValue);
-    console.log("the formValues: ", formValues);
     if (currentValue === "signupPizzaChef") {
-      // Fire action off to:
-      // /api/signup_pizza_chef
+      // Fire action off to: /api/signup_pizza_chef
+      signupPizzaChef(formValues);
     }
     if (currentValue === "signupOpsManager") {
-      // Fire action off to:
-      // /api/signup_pizza_ops_manager
+      // Fire action off to: /api/signup_pizza_ops_manager
+      signupOpsManager(formValues);
     }
   };
 

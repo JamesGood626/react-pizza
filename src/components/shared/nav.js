@@ -41,9 +41,9 @@ const StyledNav = styled.nav`
 `;
 
 function Nav() {
-  const { currentUserId } = useAuth();
+  const { currentUser } = useAuth();
 
-  if (currentUserId) {
+  if (currentUser) {
     return (
       <StyledNav>
         <ul>

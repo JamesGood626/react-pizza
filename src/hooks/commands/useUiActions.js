@@ -16,7 +16,7 @@ export function useUiActions() {
   };
 
   const fetchPizzaSuccess = pizza => {
-    console, log("the pizza in fetchPizzaSuccess: ", pizza);
+    console.log("the pizza in fetchPizzaSuccess: ", pizza);
     dispatch(setPizza({ pizza }));
   };
 

@@ -1,24 +1,44 @@
+import axios from "axios";
 import { API_REQUEST } from "../actions/api";
 import { toggleLoader } from "../actions/ui";
 
-const API_URL = "https://jsonplaceholder.typicode.com";
+const API_URL = "http://localhost:4000/api";
 
 export const apiMiddleware = ({ dispatch }) => next => action => {
   next(action);
 
   if (action.type === API_REQUEST) {
-    const { method, url, payload, onSuccess, onError } = action.meta;
+    console.log("action in API_REQUEST middleware: ", action);
+    const { payload } = action;
+    const { method, url, onSuccess, onError } = action.meta;
 
     dispatch(
       toggleLoader({ loaderVisible: true, trigger: `${method} ${url}` })
     );
 
-    fetch(API_URL + url, { method })
-      .then(results => results.json())
-      .then(response => {
-        dispatch(toggleLoader({ loaderVisible: false }));
-        onSuccess(response);
-      })
-      .catch(error => onError(error));
+    // Set payload on the request.
+    // axios[method]
+    if (method === "POST") {
+      console.log(`posting to: ${API_URL}${url}`);
+      console.log(`with data: ${payload}`);
+      axios
+        .post(`${API_URL}${url}`, payload)
+        .then(function(response) {
+          console.log("success response! ", response);
+          // onSuccess
+        })
+        .catch(function(error) {
+          console.log("Error response! ", error);
+          // onError
+        });
+    }
+
+    // fetch(API_URL + url, { method })
+    //   .then(results => results.json())
+    //   .then(response => {
+    //     dispatch(toggleLoader({ loaderVisible: false }));
+    //     onSuccess(response);
+    //   })
+    //   .catch(error => onError(error));
   }
 };

@@ -17,7 +17,7 @@ export function usePizzaActions() {
   };
 
   const fetchPizzaSuccess = pizza => {
-    console, log("the pizza in fetchPizzaSuccess: ", pizza);
+    console.log("the pizza in fetchPizzaSuccess: ", pizza);
     dispatch(setPizza({ pizza }));
   };
 

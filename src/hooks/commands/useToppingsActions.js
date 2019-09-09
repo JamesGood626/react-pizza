@@ -17,7 +17,7 @@ export function useToppingsActions() {
   };
 
   const fetchToppingsSuccess = toppings => {
-    console, log("the Toppings in fetchToppingsSuccess: ", toppings);
+    console.log("the Toppings in fetchToppingsSuccess: ", toppings);
     dispatch(setToppings({ toppings }));
   };
 

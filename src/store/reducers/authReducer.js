@@ -1,15 +1,16 @@
-import { LOGIN_USER, LOGOUT_USER } from "../actions/auth";
+import { SET_USER, LOGOUT_USER } from "../actions/auth";
 // import {helperFunction} from '../helpers'
 
 const initialState = {
-  currentUserId: null
+  currentUser: null
 };
 
 export default function authReducer(
   authState = initialState,
   { type, payload }
 ) {
-  if (type === LOGIN_USER) return authState;
+  console.log(`type: ${type} AND payload: ${payload}`);
+  if (type === SET_USER) return authState;
   if (type === LOGOUT_USER) return authState;
   return authState;
 }
