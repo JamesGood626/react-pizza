@@ -31,11 +31,11 @@ describe("pizzaReducer", () => {
     expect(pizzaReducer(undefined, {})).toEqual(initialState);
   });
 
-  it("should set the pizza array on state", () => {
+  it("should set the pizza array on setPizza", () => {
     expect(pizzaReducer(undefined, setPizza({ pizza }))).toEqual(setPizzaState);
   });
 
-  it("should clear the user from state on logout", () => {
+  it("should clear the pizza from state on deletePizza", () => {
     expect(pizzaReducer(setPizzaState, deletePizza({ id: 1 }))).toEqual(
       deletedPizzaState
     );

@@ -2,43 +2,57 @@ import { useDispatch } from "react-redux";
 import { apiRequest } from "../../store/actions/api";
 import { setUser } from "../../store/actions/auth";
 
+// NOTE:
+// Had to break out the action dispatcher helper functions from outside of useAuthActions
+// so they may be used when testing the mocked store.
+// Otherwise this error is received when testing the mocked store and attempting
+// to invoke the signUpPizzaChef yields this error:
+// Invariant Violation: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+//     1. You might have mismatching versions of React and the renderer (such as React DOM)
+//     2. You might be breaking the Rules of Hooks
+//     3. You might have more than one copy of React in the same app
+//     See https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem.
+export const signupPizzaChef = dispatch => signupData => {
+  console.log("signupData for pizzaChef: ", signupData);
+  dispatch(
+    apiRequest({
+      method: "POST",
+      url: "/signup_pizza_chef",
+      payload: signupData,
+      onSuccess: signupSuccess(dispatch),
+      onError: signupError
+    })
+  );
+};
+
+export const signupOpsManager = dispatch => signupData => {
+  console.log("signupData for signupOpsManager: ", signupData);
+  dispatch(
+    apiRequest({
+      method: "POST",
+      url: "/signup_pizza_ops_manager",
+      payload: signupData,
+      onSuccess: signupSuccess(dispatch),
+      onError: signupError
+    })
+  );
+};
+
+export const signupSuccess = dispatch => ({ username }) => {
+  console.log("the User in signupSuccess: ", username);
+  dispatch(setUser({ username }));
+};
+
+const signupError = error => {
+  console.log(error);
+  // dispatch(setSignupError())
+};
+
 export function useAuthActions() {
   const dispatch = useDispatch();
 
-  const signupPizzaChef = signupData => {
-    console.log("signupData for pizzaChef: ", signupData);
-    dispatch(
-      apiRequest({
-        method: "POST",
-        url: "/signup_pizza_chef",
-        payload: signupData,
-        onSuccess: signupSuccess,
-        onError: signupError
-      })
-    );
+  return {
+    signupPizzaChef: signupPizzaChef(dispatch),
+    signupOpsManager: signupOpsManager(dispatch)
   };
-
-  const signupOpsManager = signupData => {
-    console.log("signupData for signupOpsManager: ", signupData);
-    dispatch(
-      apiRequest({
-        method: "POST",
-        url: "/signup_pizza_ops_manager",
-        payload: signupData,
-        onSuccess: signupSuccess,
-        onError: signupError
-      })
-    );
-  };
-
-  const signupSuccess = ({ username }) => {
-    console.log("the User in signupSuccess: ", username);
-    dispatch(setUser({ username }));
-  };
-
-  const signupError = error => {
-    console.log(error);
-  };
-
-  return { signupPizzaChef, signupOpsManager };
 }
