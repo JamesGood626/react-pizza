@@ -31,9 +31,9 @@ export function useAuthActions() {
     );
   };
 
-  const signupSuccess = user => {
-    console.log("the User in signupSuccess: ", user);
-    dispatch(setUser({ user }));
+  const signupSuccess = ({ username }) => {
+    console.log("the User in signupSuccess: ", username);
+    dispatch(setUser({ username }));
   };
 
   const signupError = error => {

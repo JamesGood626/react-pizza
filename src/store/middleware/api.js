@@ -19,13 +19,11 @@ export const apiMiddleware = ({ dispatch }) => next => action => {
     // Set payload on the request.
     // axios[method]
     if (method === "POST") {
-      console.log(`posting to: ${API_URL}${url}`);
-      console.log(`with data: ${payload}`);
       axios
         .post(`${API_URL}${url}`, payload)
         .then(function(response) {
           console.log("success response! ", response);
-          // onSuccess
+          onSuccess(response.data.data);
         })
         .catch(function(error) {
           console.log("Error response! ", error);

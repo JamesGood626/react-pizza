@@ -1,8 +1,9 @@
 import { SET_TOPPINGS } from "../actions/toppings";
-// import {helperFunction} from '../helpers'
+import { reduceToObj, mapIds } from "../helpers";
 
 const initialState = {
-  toppings: []
+  toppings: {},
+  toppingIds: []
 };
 
 export default function toppingsReducer(

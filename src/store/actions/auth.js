@@ -11,3 +11,11 @@ export const setUser = ({ username }) => ({
       /api/signup_pizza_chef or /api/signup_pizza_ops_manager`
   }
 });
+
+export const logoutUser = () => ({
+  type: LOGOUT_USER,
+  payload: {},
+  meta: {
+    trigger: "Clear the username from state and reset authenticated to false"
+  }
+});
