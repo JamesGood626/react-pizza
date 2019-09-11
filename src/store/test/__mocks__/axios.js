@@ -8,13 +8,39 @@
 const mockAxios = {
   create: () => mockAxios,
   post: (url, params) => {
+    console.log("params in mock axios: ", params);
+    if (params.fail) {
+      return Promise.reject({
+        response: {
+          data: {
+            data: {
+              errors: {
+                errors: ["That username is taken"]
+              }
+            }
+          }
+        }
+      });
+    }
+    if (params.expireSession) {
+      return Promise.reject({
+        response: {
+          data: {
+            data: {
+              message: "Invalid session"
+            }
+          }
+        }
+      });
+    }
     if (url === "http://localhost:4000/api/signup_pizza_chef") {
       return Promise.resolve({
         // TODO: ...don't wrap the response data from the server in data
         data: {
           data: {
             message: "You've successfully signed up!",
-            username: "bob"
+            username: "bob",
+            permission: "PIZZA_CHEF"
           }
         }
       });

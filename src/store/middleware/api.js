@@ -1,7 +1,9 @@
 import axios from "axios";
 import { API_REQUEST } from "../actions/api";
+import { logoutUser } from "../actions/auth";
 import { toggleLoader } from "../actions/ui";
 
+const INVALID_SESSION = "Invalid session";
 const API_URL = "http://localhost:4000/api";
 
 const dispatchToggleLoader = (dispatch, bool, { method, url }) =>
@@ -11,6 +13,10 @@ const retrieveErrorMessageArr = error => {
   if (typeof error.response === "undefined") {
     // In the event of a network error...
     return ["Oops... Something went wrong. Please try again."];
+  }
+  if (typeof error.response.data.data.errors === "undefined") {
+    // Session has expired
+    return [error.response.data.data.message];
   } else {
     const { errors } = error.response.data.data.errors;
     return Object.keys(errors).flatMap(key => errors[key]);
@@ -40,6 +46,14 @@ const makeRequest = (
         dispatchToggleLoader(dispatch, false, { method, url });
         console.dir(error);
         const result = retrieveErrorMessageArr(error);
+        // NOTE:
+        // The backend only responds with "Invalid session"
+        // from within the auth_plug.ex file whenever the
+        // session has expired. So this will be the only locatioln
+        // where it'll be necessary to handle this.
+        if (result[0] === INVALID_SESSION) {
+          return dispatch(logoutUser());
+        }
         console.log("passing result to onError: ", onError);
         onError({ error: result });
       });
