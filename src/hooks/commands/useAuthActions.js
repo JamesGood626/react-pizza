@@ -38,9 +38,9 @@ export const signupOpsManager = dispatch => signupData => {
   );
 };
 
-export const signupSuccess = dispatch => ({ username }) => {
+export const signupSuccess = dispatch => ({ username, permission }) => {
   console.log("the User in signupSuccess: ", username);
-  dispatch(setUser({ username }));
+  dispatch(setUser({ username, permission }));
 };
 
 const signupError = dispatch => ({ error }) => {

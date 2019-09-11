@@ -2,10 +2,11 @@ export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const SET_SIGNUP_ERROR = "SET_SIGNUP_ERROR";
 
-export const setUser = ({ username }) => ({
+export const setUser = ({ username, permission }) => ({
   type: SET_USER,
   payload: {
-    username
+    username,
+    permission
   },
   meta: {
     trigger: `List of pizza are set on the state after successful API request to POST

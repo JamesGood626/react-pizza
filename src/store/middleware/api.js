@@ -8,8 +8,13 @@ const dispatchToggleLoader = (dispatch, bool, { method, url }) =>
   dispatch(toggleLoader({ loaderVisible: bool, trigger: `${method} ${url}` }));
 
 const retrieveErrorMessageArr = error => {
-  const { errors } = error.response.data.data.errors;
-  return Object.keys(errors).flatMap(key => errors[key]);
+  if (typeof error.response === "undefined") {
+    // In the event of a network error...
+    return ["Oops... Something went wrong. Please try again."];
+  } else {
+    const { errors } = error.response.data.data.errors;
+    return Object.keys(errors).flatMap(key => errors[key]);
+  }
 };
 
 const makeRequest = (
@@ -27,6 +32,7 @@ const makeRequest = (
       .then(function(response) {
         console.log("post success response! ", response);
         dispatchToggleLoader(dispatch, false, { method, url });
+        console.log("the success data: ", response.data.data);
         onSuccess(response.data.data);
       })
       .catch(function(error) {
