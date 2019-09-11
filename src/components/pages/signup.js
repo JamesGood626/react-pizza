@@ -3,6 +3,7 @@ import { useMachine } from "@xstate/react";
 import { Machine } from "xstate";
 import styled from "styled-components";
 import Form from "../shared/form";
+import { useUi } from "../../hooks/queries/useUi";
 import { useAuthActions } from "../../hooks/commands/useAuthActions";
 
 const PIZZA_CHEF = "PIZZA_CHEF";
@@ -28,6 +29,7 @@ const toggleMachine = Machine({
 });
 
 export default function Signup() {
+  const { loading } = useUi();
   const { signupPizzaChef, signupOpsManager } = useAuthActions();
   const [formValues, setFormValues] = useState({ username: "", password: "" });
   const [current, send] = useMachine(toggleMachine);
@@ -65,6 +67,7 @@ export default function Signup() {
   return (
     <Container>
       <h3>Signup As:</h3>
+      {loading ? <h1>LOADING</h1> : null}
       <div>
         <button
           className={current.value === "signupPizzaChef" && "active"}

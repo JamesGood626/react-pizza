@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { apiRequest } from "../../store/actions/api";
-import { setUser } from "../../store/actions/auth";
+import { setUser, setSignupError } from "../../store/actions/auth";
 
 // NOTE:
 // Had to break out the action dispatcher helper functions from outside of useAuthActions
@@ -20,7 +20,7 @@ export const signupPizzaChef = dispatch => signupData => {
       url: "/signup_pizza_chef",
       payload: signupData,
       onSuccess: signupSuccess(dispatch),
-      onError: signupError
+      onError: signupError(dispatch)
     })
   );
 };
@@ -33,7 +33,7 @@ export const signupOpsManager = dispatch => signupData => {
       url: "/signup_pizza_ops_manager",
       payload: signupData,
       onSuccess: signupSuccess(dispatch),
-      onError: signupError
+      onError: signupError(dispatch)
     })
   );
 };
@@ -43,9 +43,9 @@ export const signupSuccess = dispatch => ({ username }) => {
   dispatch(setUser({ username }));
 };
 
-const signupError = error => {
-  console.log(error);
-  // dispatch(setSignupError())
+const signupError = dispatch => ({ error }) => {
+  console.log("inside signupError", error);
+  dispatch(setSignupError({ error }));
 };
 
 export function useAuthActions() {

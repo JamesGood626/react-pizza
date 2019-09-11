@@ -20,6 +20,22 @@ jest.mock("axios");
 
 const signupParams = { username: "bob", password: "testpassword" };
 
+const loaderTrueAction = {
+  type: "TOGGLE_LOADER",
+  payload: { loaderVisible: true },
+  meta: {
+    trigger: "POST /signup_pizza_chef"
+  }
+};
+
+const loaderFalseAction = {
+  type: "TOGGLE_LOADER",
+  payload: { loaderVisible: false },
+  meta: {
+    trigger: "POST /signup_pizza_chef"
+  }
+};
+
 const signupAction = {
   type: "SET_USER",
   payload: { username: "bob" },
@@ -35,7 +51,9 @@ test("Store receives SET_USER action type when signing up user", done => {
   signupPizzaChef(store.dispatch)(signupParams);
   setTimeout(() => {
     const actions = store.getActions();
-    expect(actions[0]).toEqual(signupAction);
+    expect(actions[0]).toEqual(loaderTrueAction);
+    expect(actions[1]).toEqual(loaderFalseAction);
+    expect(actions[2]).toEqual(signupAction);
     done();
   }, 0);
 });

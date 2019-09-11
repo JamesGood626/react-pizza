@@ -1,5 +1,6 @@
 export const SET_USER = "SET_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
+export const SET_SIGNUP_ERROR = "SET_SIGNUP_ERROR";
 
 export const setUser = ({ username }) => ({
   type: SET_USER,
@@ -17,5 +18,13 @@ export const logoutUser = () => ({
   payload: {},
   meta: {
     trigger: "Clear the username from state and reset authenticated to false"
+  }
+});
+
+export const setSignupError = ({ error }) => ({
+  type: SET_SIGNUP_ERROR,
+  payload: { error },
+  meta: {
+    trigger: "Something went wrong while signing up the user"
   }
 });
