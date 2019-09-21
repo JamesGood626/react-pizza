@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 // import Login from "./pages/login";
 // import Pizzas from "./pages/pizza";
 // import Toppings from "./pages/toppings";
+import { useAuth } from "../hooks/queries/useAuth";
 import Nav from "./shared/nav";
 import Routes from "./shared/routes";
 
@@ -18,15 +19,11 @@ import Routes from "./shared/routes";
 //   for determining which routes to display. (in /components/shared)
 
 function App(props) {
+  const { authenticated, currentUser, userPermission } = useAuth();
   return (
     <Router>
-      <Nav />
-      <Routes />
-      {/* <Route path="/" exact component={Home} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/login" component={Login} />
-      <Route path="/pizzas" component={Pizzas} />
-      <Route path="/toppings" component={Toppings} /> */}
+      <Nav currentUser={currentUser} />
+      <Routes authenticated={authenticated} userPermission={userPermission} />
     </Router>
   );
 }

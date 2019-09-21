@@ -3,11 +3,10 @@ import { useMachine } from "@xstate/react";
 import { Machine } from "xstate";
 import styled from "styled-components";
 import Form from "../shared/form";
-import { useUi } from "../../hooks/queries/useUi";
 import { useAuthActions } from "../../hooks/commands/useAuthActions";
-
-const PIZZA_CHEF = "PIZZA_CHEF";
-const OPS_MANAGER = "OPS_MANAGER";
+import { useUi } from "../../hooks/queries/useUi";
+import { useAuthForm } from "../hooks";
+import UserRoleAuthToggle from "../shared/userRoleAuthToggle";
 
 const Container = styled.div`
   .active {
@@ -29,59 +28,25 @@ const toggleMachine = Machine({
 });
 
 export default function Signup() {
+  const [current, send] = useMachine(toggleMachine);
   const { loading } = useUi();
   const { signupPizzaChef, signupOpsManager } = useAuthActions();
-  const [formValues, setFormValues] = useState({ username: "", password: "" });
-  const [current, send] = useMachine(toggleMachine);
-  const toggle = type => () => {
-    if (type === PIZZA_CHEF && current.value !== "signupPizzaChef")
-      return send("TOGGLE");
-    if (type === OPS_MANAGER && current.value !== "signupOpsManager")
-      return send("TOGGLE");
-  };
+  const { formValues, handleChange, handleSubmit } = useAuthForm({
+    pizzaChefAuthAction: signupPizzaChef,
+    opsManagerAuthAction: signupOpsManager
+  });
 
-  const handleChange = ({ target: { id, value } }) => {
-    if (id === "username")
-      return setFormValues({
-        ...formValues,
-        username: value
-      });
-    if (id === "password")
-      return setFormValues({
-        ...formValues,
-        password: value
-      });
-  };
-
-  const handleSubmit = currentValue => formValues => {
-    if (currentValue === "signupPizzaChef") {
-      // Fire action off to: /api/signup_pizza_chef
-      signupPizzaChef(formValues);
-    }
-    if (currentValue === "signupOpsManager") {
-      // Fire action off to: /api/signup_pizza_ops_manager
-      signupOpsManager(formValues);
-    }
-  };
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <Container>
-      <h3>Signup As:</h3>
-      {loading ? <h1>LOADING</h1> : null}
-      <div>
-        <button
-          className={current.value === "signupPizzaChef" && "active"}
-          onClick={toggle(PIZZA_CHEF)}
-        >
-          Pizza Chef
-        </button>
-        <button
-          className={current.value === "signupOpsManager" && "active"}
-          onClick={toggle(OPS_MANAGER)}
-        >
-          Operations Manager
-        </button>
-      </div>
+      <UserRoleAuthToggle
+        current={current}
+        send={send}
+        formHeaderText="Signup As:"
+      />
       <Form formValues={formValues} handleSubmit={handleSubmit(current.value)}>
         <input
           id="username"

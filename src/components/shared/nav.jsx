@@ -40,9 +40,7 @@ const StyledNav = styled.nav`
   }
 `;
 
-function Nav() {
-  const { currentUser } = useAuth();
-
+function Nav({ currentUser }) {
   if (currentUser) {
     return (
       <StyledNav>
