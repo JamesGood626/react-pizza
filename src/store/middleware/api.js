@@ -10,6 +10,13 @@ const dispatchToggleLoader = (dispatch, bool, { method, url }) =>
   dispatch(toggleLoader({ loaderVisible: bool, trigger: `${method} ${url}` }));
 
 const retrieveErrorMessageArr = error => {
+  if (
+    error.response.hasOwnProperty("status") &&
+    error.response.status === 403
+  ) {
+    // Because the backend was down and no csrf_token was sent to the client...
+    return ["Please refresh your browser and try again."];
+  }
   if (typeof error.response === "undefined") {
     // In the event of a network error...
     return ["Oops... Something went wrong. Please try again."];

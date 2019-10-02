@@ -16,12 +16,16 @@ import { SET_USER, LOGOUT_USER, SET_SIGNUP_ERROR } from "../actions/auth";
 // }
 // Need to add user's permission to the authState...
 
-const initialState = {
-  authenticated: false,
-  currentUser: null,
-  userPermission: null,
-  signupError: null
-};
+const savedAuthData = JSON.parse(localStorage.getItem("authData"));
+console.log("the saved authData: ", savedAuthData);
+const initialState = savedAuthData.authenticated
+  ? { ...savedAuthData, signupError: null }
+  : {
+      authenticated: false,
+      currentUser: null,
+      userPermission: null,
+      signupError: null
+    };
 
 export default function authReducer(
   authState = initialState,

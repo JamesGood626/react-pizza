@@ -20,6 +20,21 @@ import Routes from "./shared/routes";
 
 function App(props) {
   const { authenticated, currentUser, userPermission } = useAuth();
+
+  useEffect(() => {
+    if (authenticated) {
+      console.log("app useEffect setting authData in localStorage");
+      localStorage.setItem(
+        "authData",
+        JSON.stringify({
+          authenticated,
+          currentUser,
+          userPermission
+        })
+      );
+    }
+  }, [authenticated]);
+
   return (
     <Router>
       <Nav currentUser={currentUser} />
